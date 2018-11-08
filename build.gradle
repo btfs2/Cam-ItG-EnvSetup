@@ -1,0 +1,103 @@
+/*
+This is the source gradle file
+
+You can modify it and include then just rerun gradle
+
+These comments will explain what all of the parts here do
+
+This is how any large project would manage it's environment (they would do it with a bigger and better script but meh)
+If anyone wants a source on this; see https://github.com/aosp-mirror/platform_frameworks_support/blob/androidx-master-dev/build.gradle
+Which is One of the android gradle scripts
+
+This will also correctly link the source files and java doc meaning most IDEs will show you
+documentation when you mouse over a method.
+
+If anyone is curious and wants configs
+*/
+apply plugin: 'java' // State we want to have all the default java stuff (i.e. running, unit testing, making jars etc.)
+apply plugin: 'eclipse' // Say we want to be able to make eclipse environments (BEST IDE)
+apply plugin: 'idea' // Say we want to make IDEA environments (some people apparently use this)
+//apply plugin: 'application' // Uncomment to allow gradle to run your application if you define a main class
+
+sourceCompatibility = 1.8 // State we want to use Java 1.8 source compatibility (as we want streams and lambdas, and LWJGL 3 needs it)
+version = '0.0.1' // Project version
+
+def implementationTitle = 'crsid-ItG' // The implementation title of the jar;
+
+//mainClassName = 'uk.ac.cam.crsid.Main' // Put in your main class (the one with the public static void main(String[] args) method) and uncomment if you want to build a runable jar
+
+// Specify attributes of created jar; not needed, but here to explain how this works
+jar { 
+    manifest { // Specify properties of the manifest of the jar
+        attributes 'Implementation-Title': implementationTitle, 'Implementation-Version': version // Use the implementation title and version set above
+        //attributes 'Main-Class': mainClassName // Un-comment to create a runable jar running specified main class
+    }
+}
+
+// Defines repositories from where our libraries will be aquired
+repositories {
+    mavenCentral() // Maven central repository, where all the things exist
+    maven { // New other mavern repository 
+      url "https://oss.sonatype.org/content/repositories/snapshots/" // Sonatype snapshot repository (contains LWJGL snapshots) if you want to use them
+    }
+}
+
+def lwjglVersion = "3.2.0" // Specify the version being downloaded (replace with a + to pull snapshots)
+
+// All the dependencies you could ever possibly need
+dependencies {
+  compile fileTree(dir: 'lib', include: '*.jar') // Includes anything placed in the directory lib of your root directory
+  // ALL OF THE LWJGLs (this is the Getting started bundle from LWJGL's site
+  compile "org.lwjgl:lwjgl:$lwjglVersion" //Standard form is the base library of LWJGL
+  compile "org.lwjgl:lwjgl:$lwjglVersion:natives-windows" //AND ALL 
+  compile "org.lwjgl:lwjgl:$lwjglVersion:natives-linux" // OF THE
+  compile "org.lwjgl:lwjgl:$lwjglVersion:natives-macos" // NATIVES NEEDED (which actually call the OpenGL)
+  compile "org.lwjgl:lwjgl-glfw:$lwjglVersion" // Windowing
+  compile "org.lwjgl:lwjgl-glfw:$lwjglVersion:natives-windows"
+  compile "org.lwjgl:lwjgl-glfw:$lwjglVersion:natives-linux"
+  compile "org.lwjgl:lwjgl-glfw:$lwjglVersion:natives-macos"
+  compile "org.lwjgl:lwjgl-opengl:$lwjglVersion" // OpenGL
+  compile "org.lwjgl:lwjgl-opengl:$lwjglVersion:natives-windows"
+  compile "org.lwjgl:lwjgl-opengl:$lwjglVersion:natives-linux"
+  compile "org.lwjgl:lwjgl-opengl:$lwjglVersion:natives-macos"
+  compile "org.lwjgl:lwjgl-jemalloc:$lwjglVersion" // Malloc in java
+  compile "org.lwjgl:lwjgl-jemalloc:$lwjglVersion:natives-windows"
+  compile "org.lwjgl:lwjgl-jemalloc:$lwjglVersion:natives-linux"
+  compile "org.lwjgl:lwjgl-jemalloc:$lwjglVersion:natives-macos"
+  compile "org.lwjgl:lwjgl-nanovg:$lwjglVersion" // Vector graphics
+  compile "org.lwjgl:lwjgl-nanovg:$lwjglVersion:natives-windows"
+  compile "org.lwjgl:lwjgl-nanovg:$lwjglVersion:natives-linux"
+  compile "org.lwjgl:lwjgl-nanovg:$lwjglVersion:natives-macos"
+  compile "org.lwjgl:lwjgl-stb:$lwjglVersion" // Standard assistance toolkit (i.e. for fonts)
+  compile "org.lwjgl:lwjgl-stb:$lwjglVersion:natives-windows"
+  compile "org.lwjgl:lwjgl-stb:$lwjglVersion:natives-linux"
+  compile "org.lwjgl:lwjgl-stb:$lwjglVersion:natives-macos"
+  compile "org.lwjgl:lwjgl-nuklear:$lwjglVersion" // Nuklear GUIs
+  compile "org.lwjgl:lwjgl-nuklear:$lwjglVersion:natives-windows"
+  compile "org.lwjgl:lwjgl-nuklear:$lwjglVersion:natives-linux"
+  compile "org.lwjgl:lwjgl-nuklear:$lwjglVersion:natives-macos"
+  compile "org.lwjgl:lwjgl-vulkan:$lwjglVersion" // Vulkan - Modern Better, but 9000000% more dificulty mode, OpenGl
+  compile "org.lwjgl:lwjgl-vulkan:$lwjglVersion:natives-windows"
+  compile "org.lwjgl:lwjgl-vulkan:$lwjglVersion:natives-linux"
+  compile "org.lwjgl:lwjgl-vulkan:$lwjglVersion:natives-macos"
+  compile "org.lwjgl:lwjgl-openal:$lwjglVersion" // Sound library
+  compile "org.lwjgl:lwjgl-openal:$lwjglVersion:natives-windows"
+  compile "org.lwjgl:lwjgl-openal:$lwjglVersion:natives-linux"
+  compile "org.lwjgl:lwjgl-openal:$lwjglVersion:natives-macos"
+  compile "org.lwjgl:lwjgl-bgfx:$lwjglVersion" // Bring your own framework graphics (allows for you to write a program in say OpenGL and run it on DirectX)
+  compile "org.lwjgl:lwjgl-bgfx:$lwjglVersion:natives-windows"
+  compile "org.lwjgl:lwjgl-bgfx:$lwjglVersion:natives-linux"
+  compile "org.lwjgl:lwjgl-bgfx:$lwjglVersion:natives-macos"
+  compile "org.lwjgl:lwjgl-assimp:$lwjglVersion" // Asset import library (i.e. for loading models)
+  compile "org.lwjgl:lwjgl-assimp:$lwjglVersion:natives-windows"
+  compile "org.lwjgl:lwjgl-assimp:$lwjglVersion:natives-linux"
+  compile "org.lwjgl:lwjgl-assimp:$lwjglVersion:natives-macos"
+  compile "org.lwjgl:lwjgl-par:$lwjglVersion" // Misc Utils
+  compile "org.lwjgl:lwjgl-par:$lwjglVersion:natives-windows"
+  compile "org.lwjgl:lwjgl-par:$lwjglVersion:natives-linux"
+  compile "org.lwjgl:lwjgl-par:$lwjglVersion:natives-macos"
+  // JOML, incase we need it (JOML contains all the vector maths you may need for OpenGL)
+  compile group: 'org.joml', name: 'joml', version: '1.9.11'
+  // Junit, which is a standard java testing library
+  testCompile group: 'junit', name: 'junit', version: '4.+'
+}
