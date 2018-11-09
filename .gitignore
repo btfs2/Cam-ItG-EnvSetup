@@ -48,3 +48,9 @@ replay_pid*.log
 /*.old
 *.bak
 /*.bak
+
+
+# File stuff #
+##############
+# Hide natives as we are auto downloading them
+/lib/natives/*

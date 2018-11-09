@@ -48,6 +48,7 @@ def lwjglVersion = "3.2.0" // Specify the version being downloaded (replace with
 dependencies {
   compile fileTree(dir: 'lib', include: '*.jar') // Includes anything placed in the directory lib of your root directory
   // ALL OF THE LWJGLs (this is the Getting started bundle from LWJGL's site
+  /*
   compile "org.lwjgl:lwjgl:$lwjglVersion" //Standard form is the base library of LWJGL
   compile "org.lwjgl:lwjgl:$lwjglVersion:natives-windows" //AND ALL 
   compile "org.lwjgl:lwjgl:$lwjglVersion:natives-linux" // OF THE
@@ -96,8 +97,28 @@ dependencies {
   compile "org.lwjgl:lwjgl-par:$lwjglVersion:natives-windows"
   compile "org.lwjgl:lwjgl-par:$lwjglVersion:natives-linux"
   compile "org.lwjgl:lwjgl-par:$lwjglVersion:natives-macos"
+  */
+  compile "org.lwjgl.lwjgl:lwjgl:2.9.3"
   // JOML, incase we need it (JOML contains all the vector maths you may need for OpenGL)
   compile group: 'org.joml', name: 'joml', version: '1.9.11'
   // Junit, which is a standard java testing library
   testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+//Some code what I did find off of da internets for making the natives auto-extract so you don't have to
+
+task natives {
+    def resolvedArtifacts = configurations.compile.resolvedConfiguration.getResolvedArtifacts()
+    osNatives('windows', resolvedArtifacts)
+    osNatives('linux', resolvedArtifacts)
+    osNatives('osx', resolvedArtifacts)
+}
+
+def osNatives(os, artifacts) {
+    copy {
+        def classifier = 'natives-' + os
+        def matches = artifacts.findAll { it.classifier == classifier }
+        from matches.collect { it.file }.collect { zipTree(it) }
+        into "lib/natives/"
+    }
 }
