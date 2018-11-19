@@ -99,6 +99,8 @@ dependencies {
   compile "org.lwjgl:lwjgl-par:$lwjglVersion:natives-macos"
   */
   compile "org.lwjgl.lwjgl:lwjgl:2.9.3"
+  compile "org.lwjgl.lwjgl:lwjgl_util:2.9.3"
+  
   // JOML, incase we need it (JOML contains all the vector maths you may need for OpenGL)
   compile group: 'org.joml', name: 'joml', version: '1.9.11'
   // Junit, which is a standard java testing library
@@ -106,6 +108,7 @@ dependencies {
 }
 
 //Some code what I did find off of da internets for making the natives auto-extract so you don't have to
+//And then fixed to make it work with the latest gradle
 
 task natives {
     def resolvedArtifacts = configurations.compile.resolvedConfiguration.getResolvedArtifacts()
